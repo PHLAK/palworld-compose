@@ -4,7 +4,7 @@ services:
     image: ghcr.io/pocketpairjp/palserver:${PALWORLD_VERSION:-latest}
     env_file: environment.d/palworld.env
     ports:
-      - ${PALWORLD_PORT:-127.0.0.1:8211}:8211/udp
+      - ${PALWORLD_PORT:-8211}:8211/udp
     volumes:
       - ${PALWORLD_DATA_PATH:-./data}:/pal/Package/Pal/Saved
       - ./entrypoint.sh:/pal/entrypoint.sh:ro
