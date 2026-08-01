@@ -1,0 +1,25 @@
+services:
+
+  palworld-server:
+    image: ghcr.io/pocketpairjp/palserver:${PALWORLD_VERSION:-latest}
+    env_file: environment.d/palworld.env
+    ports:
+      - ${PALWORLD_PORT:-127.0.0.1:8211}:8211/udp
+    volumes:
+      - ${PALWORLD_DATA_PATH:-./data}:/pal/Package/Pal/Savedp
+      - /etc/localtime:/etc/localtime:ro
+    entrypoint: /pal/Package/PalServer.sh
+    command: [-port=8211, -useperfthreads, -NoAsyncLoadingThread, -UseMultithreadForDS]
+    restart: unless-stopped
+
+  watchtower:
+    image: nickfedor/watchtower:${WATCHTOWER_VERSION:-latest}
+    env_file: environment.d/watchtower.env
+    environment:
+      WATCHTOWER_SCOPE: ${COMPOSE_PROJECT_NAME}
+    volumes:
+      - ${DOCKER_SOCKET:-/var/run/docker.sock}:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      com.centurylinklabs.watchtower.scope: ${COMPOSE_PROJECT_NAME}
+    restart: unless-stopped
