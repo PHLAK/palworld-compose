@@ -7,8 +7,9 @@ services:
       - ${PALWORLD_PORT:-127.0.0.1:8211}:8211/udp
     volumes:
       - ${PALWORLD_DATA_PATH:-./data}:/pal/Package/Pal/Saved
+      - ./entrypoint.sh:/pal/entrypoint.sh:ro
       - /etc/localtime:/etc/localtime:ro
-    entrypoint: /pal/Package/PalServer.sh
+    entrypoint: /pal/entrypoint.sh
     command: [-port=8211, -useperfthreads, -NoAsyncLoadingThread, -UseMultithreadForDS]
     restart: unless-stopped
 
